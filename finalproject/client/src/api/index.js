@@ -1,8 +1,9 @@
 import axios from 'axios'
 
 const api = axios.create({
-	baseURL: 'http://localhost:3000/api',
+    baseURL: 'http://localhost:3000/api',
 })
+
 
 export const insertEvent = payload => api.post(`/event`, payload)
 export const getAllEvents = () => api.get(`/events`)
@@ -11,11 +12,11 @@ export const deleteEventById = id => api.delete(`/event/${id}`)
 export const getEventById = id => api.get(`/event/${id}`)
 
 const apis = {
-	insertEvent,
-	getAllEvents,
-	updateEventById,
-	deleteEventById,
-	getEventById,
+    insertEvent,
+    getAllEvents,
+    updateEventById,
+    deleteEventById,
+    getEventById,
 }
 
 export default apis

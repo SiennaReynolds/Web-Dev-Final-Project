@@ -6,7 +6,7 @@ createEvent = (req, res) => {
     if (!body) {
         return res.status(400).json({
             success: false,
-            error: 'You must provide an event',
+            error: 'You must provide a event',
         })
     }
 
@@ -93,11 +93,6 @@ getEventById = async (req, res) => {
             return res.status(400).json({ success: false, error: err })
         }
 
-        if (!event) {
-            return res
-                .status(404)
-                .json({ success: false, error: `Event not found` })
-        }
         return res.status(200).json({ success: true, data: event })
     }).catch(err => console.log(err))
 }

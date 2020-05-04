@@ -1,1 +1,0 @@
-//make onclick that updates mongodb value for a person's name.
