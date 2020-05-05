@@ -1,6 +1,5 @@
 {
   "ExpandedNodes": [
-    "",
     "\\client",
     "\\client\\src",
     "\\client\\src\\api",
@@ -11,6 +10,5 @@
     "\\server\\db",
     "\\server\\routes"
   ],
-  "SelectedNode": "\\server\\db\\index.js",
   "PreviewInSolutionExplorer": false
 }

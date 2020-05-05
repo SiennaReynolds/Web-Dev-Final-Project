@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import ReactTable from 'react-table'
 import api from '../api'
-
 import styled from 'styled-components'
-
 import 'react-table/react-table.css'
 
 const Wrapper = styled.div`
@@ -14,42 +12,30 @@ const Update = styled.div`
     color: #ef9b0f;
     cursor: pointer;
 `
-
-const Delete = styled.div`
-    color: #ff0000;
-    cursor: pointer;
+const Button = styled.button.attrs({
+    className: `btn btn-primary`,
+})`
+    margin: 15px 15px 15px 5px;
 `
 
 class UpdateEvent extends Component {
-    updateUser = event => {
+    updateUser = async event => {
         event.preventDefault()
-        //make it so that this does the server checkin.
-        window.location.href = `/events/update/${this.props.id}`
+        console.log("attempting to fetch list for this event, sending to the event page")
+        await api.getAllEvents(this.props.id).then(events => {
+            this.setState({
+                events: events.data.data,
+                isLoading: false,
+            })
+            window.location.href = `/${this.props.id}/view`
+        })
+        //
     }
-
     render() {
-        return <Update onClick={this.updateUser}>check-in</Update>
+        return <Update onClick={this.updateUser}>Update Attendance</Update>
     }
 }
 
-class DeleteEvent extends Component {
-    deleteUser = event => {
-        event.preventDefault()
-
-        if (
-            window.confirm(
-                `Do you want to delete the event ${this.props.id} permanently?`,
-            )
-        ) {
-            api.deleteEventById(this.props.id)
-            window.location.reload()
-        }
-    }
-
-    render() {
-        return <Delete onClick={this.deleteUser}>Delete</Delete>
-    }
-}
 
 class EventsList extends Component {
     constructor(props) {
@@ -63,12 +49,18 @@ class EventsList extends Component {
 
     componentDidMount = async () => {
         this.setState({ isLoading: true })
-
-        await api.getAllEvents().then(events => {
+        console.log("fetching tables")
+        await api.getAllTables().then(name => {
             this.setState({
-                events: events.data.data,
+                events: name.data.names,
                 isLoading: false,
             })
+            for (var i = 0; i < name.data.names.length; i++) {
+                console.log(name.data.names[i].name)
+                
+            }
+            
+            console.log("fetched tables")
         })
     }
 
@@ -77,58 +69,8 @@ class EventsList extends Component {
 
         const columns = [
             {
-                Header: 'PantherID',
-                accessor: 'Panther ID',
-                filterable: true,
-            },
-            {
-                Header: 'First Name',
-                accessor: 'First Name',
-                filterable: true,
-            },
-            {
-                Header: 'Last Name',
-                accessor: 'Last Name',
-                filterable: true,
-            },
-            {
-                Header: 'Department',
-                accessor: 'Department',
-                filterable: true,
-            },
-            {
-                Header: 'Level',
-                accessor: 'Level',
-                filterable: true,
-            },
-            {
-                Header: 'Campus',
-                accessor: 'Campus',
-                filterable: true,
-            },
-            {
-                Header: 'Degree',
-                accessor: 'Degree',
-                filterable: true,
-            },
-            {
-                Header: 'Email',
-                accessor: 'Email',
-                filterable: true,
-            },
-            {
-                Header: 'College',
-                accessor: 'College',
-                filterable: true,
-            },
-            {
-                Header: 'Year',
-                accessor: 'Year',
-                filterable: true,
-            },
-            {
-                Header: 'Check-in',
-                accessor: 'checkin',
+                Header: 'Table Name',
+                accessor: 'name',
                 filterable: true,
             },
             {
@@ -137,7 +79,7 @@ class EventsList extends Component {
                 Cell: function(props) {
                     return (
                         <span>
-                            <UpdateEvent id={props.original._id} />
+                            <UpdateEvent id={props.original.name} />
                         </span>
                     )
                 },
@@ -145,10 +87,6 @@ class EventsList extends Component {
         ]
 
         let showTable = true
-        /*if (!events.length) {
-            showTable = false
-        }*/
-
         return (
             <Wrapper>
                 {showTable && (
@@ -156,7 +94,7 @@ class EventsList extends Component {
                         data={events}
                         columns={columns}
                         loading={isLoading}
-                        defaultPageSize={10}
+                        defaultPageSize={11}
                         showPageSizeOptions={true}
                         minRows={0}
                     />

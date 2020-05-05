@@ -3,9 +3,9 @@ const Schema = mongoose.Schema
 
 const Event = new Schema(
     {
-        PantherID: { type: String, required: true },
-        FirstName: { type: String, required: true },
-        LastName: { type: String, required: true },
+        PantherID: { type: String, required: false },
+        FirstName: { type: String, required: false },
+        LastName: { type: String, required: false },
         Department: { type: String, required: false },
         Level: { type: String, required: false },
         Campus: { type: String, required: false },

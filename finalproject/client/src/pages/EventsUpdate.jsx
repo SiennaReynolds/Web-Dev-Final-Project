@@ -41,22 +41,39 @@ class EventsUpdate extends Component {
 
         this.state = {
             id: this.props.match.params.id,
-            checkin: false,
+            checkin:'',
         }
     }
 
     handleChangeInputName = async event => {
+        const name = event.target.value
+        this.setState({ name })
+    }
+    handleChangeInputCheckin = async event => {
         const checkin = event.target.value
         this.setState({ checkin })
     }
-    
+
+    handleChangeInputRating = async event => {
+        const rating = event.target.validity.valid
+            ? event.target.value
+            : this.state.rating
+
+        this.setState({ rating })
+    }
+
+    handleChangeInputTime = async event => {
+        const time = event.target.value
+        this.setState({ time })
+    }
 
     handleUpdateEvent = async () => {
         const { id, checkin } = this.state
-        const payload = { checkin }
-
-        await api.updateEventById(id, payload).then(res => {
-            window.alert(`Attendance updated successfully`)
+        const payload = {  checkin }
+        console.log(payload)
+        const page = ''//get from table
+        await api.updateEventById(page,id, payload).then(res => {
+            window.alert(`Event updated successfully`)
             this.setState({
                 checkin: '',
             })
@@ -65,6 +82,7 @@ class EventsUpdate extends Component {
 
     componentDidMount = async () => {
         const { id } = this.state
+        console.log(id)
         const event = await api.getEventById(id)
 
         this.setState({
@@ -76,17 +94,16 @@ class EventsUpdate extends Component {
         const { checkin } = this.state
         return (
             <Wrapper>
-                <Title>Student Attendance</Title>
-
-                <Label>Name: </Label>
-                <InputText
-                    type="text"
-                    value={checkin}
-                    onChange={this.handleChangeInputName}
-                />
+                <Title>Mark Student as Present</Title>
                 
+                <InputText
+                    type="radio"
+                    value={checkin}
+                    onChange={this.handleChangeInputCheckin}
+                />
+
                 <Button onClick={this.handleUpdateEvent}>Update Event</Button>
-                <CancelButton href={'/events/list'}>Cancel</CancelButton>
+                <CancelButton href={'/events/view'}>Cancel</CancelButton>
             </Wrapper>
         )
     }

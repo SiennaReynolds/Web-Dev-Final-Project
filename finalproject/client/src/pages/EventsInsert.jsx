@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import api from '../api'
-
 import styled from 'styled-components'
 
 const Title = styled.h1.attrs({
@@ -41,8 +40,6 @@ class EventsInsert extends Component {
 
         this.state = {
             name: '',
-            rating: '',
-            time: '',
         }
     }
 
@@ -50,37 +47,23 @@ class EventsInsert extends Component {
         const name = event.target.value
         this.setState({ name })
     }
-
-    handleChangeInputRating = async event => {
-        const rating = event.target.validity.valid
-            ? event.target.value
-            : this.state.rating
-
-        this.setState({ rating })
-    }
-
-    handleChangeInputTime = async event => {
-        const time = event.target.value
-        this.setState({ time })
-    }
+    
 
     handleIncludeEvent = async () => {
-        const { name, rating, time } = this.state
-        const arrayTime = time.split('/')
-        const payload = { name, rating, time: arrayTime }
-
-        await api.insertEvent(payload).then(res => {
-            window.alert(`Event inserted successfully`)
-            this.setState({
-                name: '',
-                rating: '',
-                time: '',
-            })
+        const { name } = this.state
+        const payload = { name }
+        console.log(payload)
+        api.createTable(name).then(res => {
+            window.alert(`Event created successfully`)
         })
+        setTimeout(function () {
+            window.location.href = "/events/list";
+        }, 2);
+        window.alert(`Event created successfully`)
     }
 
     render() {
-        const { name, rating, time } = this.state
+        const { name } = this.state
         return (
             <Wrapper>
                 <Title>Create Event</Title>
@@ -91,28 +74,10 @@ class EventsInsert extends Component {
                     value={name}
                     onChange={this.handleChangeInputName}
                 />
-
-                <Label>Rating: </Label>
-                <InputText
-                    type="number"
-                    step="0.1"
-                    lang="en-US"
-                    min="0"
-                    max="10"
-                    pattern="[0-9]+([,\.][0-9]+)?"
-                    value={rating}
-                    onChange={this.handleChangeInputRating}
-                />
-
-                <Label>Time: </Label>
-                <InputText
-                    type="text"
-                    value={time}
-                    onChange={this.handleChangeInputTime}
-                />
+                
 
                 <Button onClick={this.handleIncludeEvent}>Add Event</Button>
-                <CancelButton href={'/movies/list'}>Cancel</CancelButton>
+                <CancelButton href={'/events/list'}>Cancel</CancelButton>
             </Wrapper>
         )
     }

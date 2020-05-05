@@ -4,10 +4,11 @@ const EventCtrl = require('../controllers/event-ctrl')
 
 const router = express.Router()
 
-router.post('/event', EventCtrl.createEvent)
-router.put('/event/:id', EventCtrl.updateEvent)
+router.post('/events', EventCtrl.createTable)
+router.put('/:page/:id', EventCtrl.updateEvent)
 router.delete('/event/:id', EventCtrl.deleteEvent)
 router.get('/event/:id', EventCtrl.getEventById)
-router.get('/events', EventCtrl.getEvents)
+router.get('/:id/view', EventCtrl.getEvents)
+router.get('/events', EventCtrl.getTables)
 
 module.exports = router
