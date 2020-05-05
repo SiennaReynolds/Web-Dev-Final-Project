@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+/*const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const Event = new Schema(
@@ -18,4 +18,5 @@ const Event = new Schema(
     { timestamps: true },
 )
 
-module.exports = mongoose.model('events', Event)
+module.exports = { Event } 
+module.exports = mongoose.model('even', Event)*/

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import ReactTable from 'react-table'
 import api from '../api'
 import styled from 'styled-components'
@@ -28,7 +28,11 @@ class UpdateEvent extends Component {
         const id = this.props.id
         const checkin = false
         const payload = { checkin }
-        await api.updateEventById(id, payload).then(res => {
+        let temp = window.location.pathname;
+        temp = temp.substring(temp.indexOf("/") + 1, temp.lastIndexOf("/"))
+        console.log(temp)
+        const page = temp
+        await api.updateEventById(page,id, payload).then(res => {
             
             this.setState({
                 checkin: '',
@@ -57,13 +61,84 @@ class EventList extends Component {
 
     componentDidMount = async () => {
         this.setState({ isLoading: true })
-        await api.getAllEvents(this.props.id ).then(events => {
+        let temp = window.location.pathname;
+        temp = temp.substring(temp.indexOf("/")+1, temp.lastIndexOf("/"))
+        console.log(temp)
+        await api.getAllEvents(temp).then(events => {
             this.setState({
                 events: events.data.data,
                 isLoading: false,
             })
         })
     }
+
+    handleUploadFile = async (event) => {
+        let temp = window.location.pathname;
+        temp = temp.substring(temp.indexOf("/") + 1, temp.lastIndexOf("/"))
+
+        const name = temp
+        const file = event.target.files[0].name
+
+        console.log(file, event.target.files)
+        var formData = new FormData();
+        var newfile = event.target.files[0]
+        formData.append("file", newfile);
+
+        api.updateEventByFile(name, file).then(res => {
+            //window.alert(`Event data uploaded successfully`)
+        })/**/
+       /* setTimeout(function () {
+            window.location.href = `/${name}/view`;
+        }, 200000);
+        window.alert(`Event data uploaded successfully`)*/
+    }
+    relocate() {
+        let temp = window.location.pathname;
+        temp = temp.substring(temp.indexOf("/") + 1, temp.lastIndexOf("/"))
+        const name = temp;
+        window.location.href = `/${name}/download`
+    }
+    uploadFile(event) {
+        let file = event.target.files[0];
+        let temp = window.location.pathname;
+        temp = temp.substring(temp.indexOf("/") + 1, temp.lastIndexOf("/"))
+        const name = temp;
+        if (file) {
+            const reader = new FileReader()
+            //reader.onload = event => temp = temp + event.target.result
+            
+            reader.onload = function (e) {
+                // Use reader.result
+                var csv = reader.result;
+                var lines = csv.split("\n");
+                var result = [];
+                var headers = lines[0].split(",");
+                for (var i = 1; i < lines.length; i++) {
+                    var obj = { checkin: false};
+                    var currentline = lines[i].split(",");
+                    for (var j = 0; j < headers.length; j++) {
+                        obj[headers[j]] = currentline[j];
+                    }
+                    result.push(obj);
+                }
+                //return result; //JavaScript object
+                result = JSON.stringify(result); //JSON
+                result = `${result}`
+                console.log("sending final to API" + result)
+               
+                api.updateEventByFile(name, result).then(res => {
+                    window.alert(`Event data uploaded successfully`)
+                    window.location.href = `/${name}/view`
+                })/**/
+            }
+            const text = reader.readAsText(file)
+            reader.onloadend = function () {
+                console.log('DONE', reader.readyState); // readyState will be 2
+            };
+        }
+
+    }
+
 
     render() {
         const { events, isLoading } = this.state
@@ -139,9 +214,11 @@ class EventList extends Component {
         ]
 
         let showTable = true
-        /*if (!events.length) {
+        let showUpload = true
+        if (!events.length) {
             showTable = false
-        }*/
+            showUpload = true
+        }
 
         return (
             <Wrapper>
@@ -157,6 +234,9 @@ class EventList extends Component {
                         minRows={0}
                     />
                 )}
+                {showUpload && (
+                   <input className= "file" type="file" accept=".xls,.csv" name="myFile" onChange={this.uploadFile} />)}
+                <button className="button" onClick={this.relocate}>Checkin Complete</button>
             </Wrapper>
         )
     }

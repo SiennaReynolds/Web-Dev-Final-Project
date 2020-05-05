@@ -22,14 +22,10 @@ class UpdateEvent extends Component {
     updateUser = async event => {
         event.preventDefault()
         console.log("attempting to fetch list for this event, sending to the event page")
-        await api.getAllEvents(this.props.id).then(events => {
-            this.setState({
-                events: events.data.data,
-                isLoading: false,
-            })
-            window.location.href = `/${this.props.id}/view`
-        })
-        //
+        await api.getAllEvents(this.props.id)
+            .then(
+                window.location.href = `/${this.props.id}/view`
+        )
     }
     render() {
         return <Update onClick={this.updateUser}>Update Attendance</Update>
