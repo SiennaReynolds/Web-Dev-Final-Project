@@ -110,14 +110,14 @@ class EventList extends Component {
             reader.onload = function (e) {
                 // Use reader.result
                 var csv = reader.result;
-                var lines = csv.split("\n");
+                var lines = csv.replace(" ", "").split("\n");
                 var result = [];
-                var headers = lines[0].split(",");
+                var headers = lines[0].replace(" ", "").split(",");
                 for (var i = 1; i < lines.length; i++) {
                     var obj = { checkin: false};
-                    var currentline = lines[i].split(",");
+                    var currentline = lines[i].replace(" ", "").split(",");
                     for (var j = 0; j < headers.length; j++) {
-                        obj[headers[j]] = currentline[j];
+                        obj[headers[j].replace(" ", "")] = currentline[j];
                     }
                     result.push(obj);
                 }
@@ -146,17 +146,17 @@ class EventList extends Component {
         const columns = [
             {
                 Header: 'PantherID',
-                accessor: 'Panther ID',
+                accessor: 'PantherID',
                 filterable: true,
             },
             {
                 Header: 'First Name',
-                accessor: 'First Name',
+                accessor: 'FirstName',
                 filterable: true,
             },
             {
                 Header: 'Last Name',
-                accessor: 'Last Name',
+                accessor: 'LastName',
                 filterable: true,
             },
             {

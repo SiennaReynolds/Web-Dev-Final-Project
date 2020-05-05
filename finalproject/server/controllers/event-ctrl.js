@@ -58,7 +58,7 @@ createEvent = (req, res) => {
 createTable = async (req, res) => {
     const mongoose = require('mongoose')
     const Schema = mongoose.Schema
-
+    console.log("create db")
     const Event = new Schema(
         {
             PantherID: { type: String, required: false },
