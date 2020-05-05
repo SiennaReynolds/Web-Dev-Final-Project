@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component} from 'react'
 import ReactTable from 'react-table'
 import api from '../api'
 import styled from 'styled-components'
@@ -12,12 +12,6 @@ const Update = styled.div`
     color: #ef9b0f;
     cursor: pointer;
 `
-const Button = styled.button.attrs({
-    className: `btn btn-primary`,
-})`
-    margin: 15px 15px 15px 5px;
-`
-
 class UpdateEvent extends Component {
     updateUser = async event => {
         event.preventDefault()

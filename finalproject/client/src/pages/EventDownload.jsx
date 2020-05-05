@@ -1,14 +1,9 @@
-import React, { Component, useState } from 'react'
-import ReactTable from 'react-table'
+import React, { Component } from 'react'
 import api from '../api'
-import styled from 'styled-components'
 import 'react-table/react-table.css'
 
 
 class EventDownload extends Component {
-    constructor(props) {
-        super(props)
-    }
     downloadXLS() {
         let temp = window.location.pathname;
         temp = temp.split("/")

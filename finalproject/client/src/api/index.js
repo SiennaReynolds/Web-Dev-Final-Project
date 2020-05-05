@@ -4,7 +4,6 @@ const api = axios.create({
     baseURL: 'http://localhost:3000/api',
 })
 
-const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
 export const insertEvent = payload => api.post(`/event`, payload)
 export const createTable = payload => api.post(`/events`, payload)

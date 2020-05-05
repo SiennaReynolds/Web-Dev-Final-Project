@@ -12,12 +12,6 @@ const Update = styled.div`
     color: #ef9b0f;
     cursor: pointer;
 `
-const Button = styled.button.attrs({
-    className: `btn btn-primary`,
-})`
-    margin: 15px 15px 15px 5px;
-`
-
 class UpdateEvent extends Component {
     updateUser = async event => {
         event.preventDefault()

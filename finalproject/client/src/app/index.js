@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route} from 'react-router-dom'
 
-import { EventsList, EventUpload, EventList, EventsInsert, EventsUpdate, EventDownload} from '../pages'
+import { EventsList, EventUpload, EventList, EventsInsert, EventDownload} from '../pages'
 import {
     NavLink,
 } from "react-router-dom";
