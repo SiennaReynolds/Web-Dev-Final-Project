@@ -1,21 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-//import Button from '../src/components/button.js';
-import Input from '../src/components/Input/Input.js';
+import React from 'react'
+import { BrowserRouter as Router, Route} from 'react-router-dom'
 
+import { EventsList, EventUpload, EventList, EventsInsert, EventsUpdate, EventDownload} from '../pages'
+import {
+    NavLink,
+} from "react-router-dom";
+//import 'bootstrap/dist/css/bootstrap.min.css'
+//
+import '../style/index.css'
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Welcome to the GSU Student Orientation Attendance Page
-        </p>
-              <button class="button" href="/">Upload Student Orientation CSX/XCL</button>
-              <button class="button" href="/">Mark Off Present/Attending Students</button>
-        </header>
-      </div>
-  );
+    return (
+        <Router>
+            <center>
+                <div className="header">
+                    <h2>Welcome to the GSU student Check-in page</h2>
+                    <button className="button"><NavLink to="/events/list">View Events</NavLink></button>
+                    <button className="button"><NavLink to="/events/create">Create Event</NavLink></button>
+                </div>
+
+                <div className="content">
+                    <Route exact path="/events/list" component={EventsList} />
+                    <Route path="/events/create" component={EventsInsert} />
+                    <Route path="/:id/view/" component={EventList} />
+                    <Route path="/:id/upload/" component={EventUpload} />
+                    <Route path="/:id/download/" component={EventDownload} />
+                </div>
+            </center>
+        </Router>
+    )
 }
 
-export default App;
+export default App
